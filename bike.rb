@@ -1,11 +1,12 @@
 # Bike
+require_relative 'cargoManager'
 
 class Bike
 
   STANDARD_WEIGHT = 200 # lbs
-  MAX_CARGO_ITEMS = 10
 
-  attr_accessor :id, :color, :price, :weight, :rented, :cargo_contents
+
+  attr_accessor :id, :color, :price, :weight, :rented
 
   def initialize(id, color, price, weight = STANDARD_WEIGHT, rented = false)
     @id = id
@@ -13,27 +14,22 @@ class Bike
     @price = price
     @weight = weight
     @rented = rented
-    @cargo_contents = []
+    @cargo_manager = cargoManager.new
   end
 
   def rent!
     self.rented = true
   end
 
-  def add_cargo(item)
-    self.cargo_contents << item
+  def add_cargo_to_bike(cargo)
+    @cargo_manager.add_cargo(cargo)
   end
 
-  def remove_cargo(item)
-    self.cargo_contents.remove(item)
+  def remove_cargo_from_bike(cargo)
+    @cargo_manager.remove_cargo(cargo)
   end
 
-  def pannier_capacity
-    MAX_CARGO_ITEMS
+  def remaining_cargo_capacity
+    cargo_manager.pannier_remaining_capacity
   end
-
-  def pannier_remaining_capacity
-    MAX_CARGO_ITEMS - self.cargo_contents.size
-  end
-
 end
